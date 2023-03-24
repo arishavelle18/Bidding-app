@@ -1,0 +1,6 @@
+<% provide(:title,"Edit Bid") %>
+<% provide(:button,"Edit Auction") %>
+<h1>Edit Bid</h1>
+
+
+<%= render partial:"form",locals:{setup:product_edit_path(@product),type:"patch"} %>

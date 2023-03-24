@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product_name: MyString
+  description: MyString
+  lowest_allowable_bid: 1
+  starting_bid_price: 1
+  bidding_expiration: 2023-03-24 19:31:20
+  user: one
+
+two:
+  product_name: MyString
+  description: MyString
+  lowest_allowable_bid: 1
+  starting_bid_price: 1
+  bidding_expiration: 2023-03-24 19:31:20
+  user: two
