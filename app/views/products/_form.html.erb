@@ -1,33 +1,33 @@
 <%= form_with model:@product,url:setup,data:{turbo:true} do |f| %>
 
      <%= render partial:"layouts/error_message",locals:{objects:@product} %>
-    <div>   
+    <div class="mb-3">   
          <%= f.label :"Product name : " %>
          <%= f.text_field :product_name,class:"form-control"%>
     </div>
-    <br>
-    <div>   
+    
+    <div class="mb-3">   
          <%= f.label :"Description : " %>
          <%= f.text_field :description,class:"form-control"%>
     </div>
-    <br>
-    <div>   
+    
+    <div class="mb-3">   
          <%= f.label :"Lowest allowable bid : " %>
          <%= f.number_field :lowest_allowable_bid,class:"form-control" %>
     </div>
-    <br>
-    <div>   
+    
+    <div class="mb-3">   
          <%= f.label :"Starting Bid Price : " %>
          <%= f.number_field :starting_bid_price,class:"form-control" %>
     </div>
-    <br>
-    <div>
+    
+    <div class="mb-3">
         <%= f.label :"Bidding Expiration : " %>
          <%= f.datetime_field :bidding_expiration,class:"form-control",max:1.year.from_now %>
     </div>
     <input type="hidden"name="product[admin_id]" value=<%= Admin.first.id %>>
-    <br>
-   <div>
+    
+   <div class="mb-3">
         <%= f.submit yield(:button),class:"btn btn-success" %>
    </div>
     

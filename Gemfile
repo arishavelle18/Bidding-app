@@ -74,3 +74,5 @@ end
 
 # for timeliness validator
 gem 'validates_timeliness', '~> 7.0.0.beta1'
+# for advance validation for email
+gem "valid_email2"
