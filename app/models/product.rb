@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  belongs_to :admin
+  belongs_to :user
   has_many :bids
 
   # it must be present

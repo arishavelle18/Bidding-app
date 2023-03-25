@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_many :bids
+    has_many :products
     has_secure_password
 
     # we make sure email store in downcase

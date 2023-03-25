@@ -1,30 +1,52 @@
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <%= link_to "BidDash",products_path,class:"navbar-brand" %>
+    
+    <% if logged_in? %>
+         <%= link_to "BidDash",products_path,class:"navbar-brand" %>
+    <% else %>
+         <%= link_to "BidDash",login_path,class:"navbar-brand" %>
+    <% end %>
+    
+   
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <%= link_to "Home",products_path,class:"nav-link" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Create Auction",product_new_path,class:"nav-link" %>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Admin</a>
-        </li>
-        
-        
+        <% if logged_in? %>
+            <li class="nav-item">
+              <%= link_to "Home",products_path,class:"nav-link" %>
+            </li>
+            
+            <% if current_user.is_admin %>
+              <li class="nav-item">
+                <%= link_to "Create Auction",product_new_path,class:"nav-link" %>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Admin</a>
+              </li>
+            <% end %>
+        <% end %>
       </ul>
       <ul class="d-flex navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
+          
+          <% if logged_in? %>
+             <li class="nav-item mx-3"> 
+                <%= link_to @current_user.full_name, "#",class:"nav-link" %>
+            </li> 
+            <li class="nav-item mx-3"> 
+                <%= link_to 'Logout', logout_path, method: :delete, :class => 'btn btn-outline-secondary',:onclick => "return confirm('Are you sure you want to delete this post?')" %>
+            </li>
+          <% else %>
+             <li class="nav-item">
+                <%= link_to "Login",login_path,class:"nav-link" %>
             </li>
             <li class="nav-item">
                 <%= link_to "Sign Up",user_path,class:"nav-link" %>
             </li>
+          <% end %>
+          
+            
       </ul>
     </div>
   </div>

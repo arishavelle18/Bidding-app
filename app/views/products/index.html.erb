@@ -23,17 +23,24 @@
             <td><%= product.starting_bid_price %></td>
             <td><%= product.bidding_expiration %></td>
             <td> None</td>
-            <td class="d-flex flex-row bd-highlight">
-                <%= link_to "Send Bid",'#',class:"btn btn-primary mx-3"%>
-                <%= link_to "Stop Bid",'#',class:"btn btn-secondary mx-3" %>
-                <%= link_to "Edit Auction",product_edit_path(product),class:"btn btn-info mx-3" %>
-                <%= link_to "Delete Auction",product_delete_path(product),data:{turbo:true},method: :delete,class:"btn btn-danger mx-3",:onclick => "return confirm('Are you sure you want to delete this post?')" %>
+            <td class="d-flex flex-row bd-highlight justify-content-center">
+                
+                
+                <% if !current_user.is_admin%>
+                    <%= link_to "Send Bid",'#',class:"btn btn-primary mx-3"%>
+                <% else %>
+                    <%= link_to "Stop Bid",'#',class:"btn btn-secondary mx-3" %>
+                    <%= link_to "Edit Auction",product_edit_path(product),class:"btn btn-info mx-3" %>
+                    <%= link_to "Delete Auction",product_delete_path(product),data:{turbo:true},method: :delete,class:"btn btn-danger mx-3",:onclick => "return confirm('Are you sure you want to delete this post?')" %>
+                <% end %>
+                
+                
             </td>
         </tr>   
         <% end %>
     
     </tbody>
 </table>
-<% if Admin.count == 0 %>
+<% if Product.count == 0 %>
     <h2 class="text-center">No Auction</h2>
 <% end %>

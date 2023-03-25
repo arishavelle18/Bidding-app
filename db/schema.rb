@@ -10,17 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_24_173225) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_25_150921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "admins", force: :cascade do |t|
-    t.string "full_name"
-    t.string "email"
-    t.string "password_digest"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "bids", force: :cascade do |t|
     t.integer "bid_value"
@@ -40,8 +32,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_173225) do
     t.datetime "bidding_expiration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "admin_id"
-    t.index ["admin_id"], name: "index_products_on_admin_id"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -50,9 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_24_173225) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_admin", default: false
   end
 
   add_foreign_key "bids", "products"
   add_foreign_key "bids", "users"
-  add_foreign_key "products", "admins"
+  add_foreign_key "products", "users"
 end

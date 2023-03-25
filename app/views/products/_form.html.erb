@@ -25,7 +25,7 @@
         <%= f.label :"Bidding Expiration : " %>
          <%= f.datetime_field :bidding_expiration,class:"form-control",max:1.year.from_now %>
     </div>
-    <input type="hidden"name="product[admin_id]" value=<%= Admin.first.id %>>
+    <input type="hidden"name="product[admin_id]" value=<%= User.first.id %>>
     
    <div class="mb-3">
         <%= f.submit yield(:button),class:"btn btn-success" %>
