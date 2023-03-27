@@ -31,9 +31,12 @@
       <ul class="d-flex navbar-nav ms-auto mb-2 mb-lg-0">
           
           <% if logged_in? %>
-             <li class="nav-item mx-3"> 
-                <%= link_to @current_user.full_name, "#",class:"nav-link" %>
+          
+          <% if !current_user.is_admin %>
+            <li class="nav-item mx-3"> 
+                <%= link_to @current_user.full_name, profile_path,class:"nav-link" %>
             </li> 
+          <% end %>
             <li class="nav-item mx-3"> 
                 <%= link_to 'Logout', logout_path, method: :delete, :class => 'btn btn-outline-secondary',:onclick => "return confirm('Are you sure you want to delete this post?')" %>
             </li>

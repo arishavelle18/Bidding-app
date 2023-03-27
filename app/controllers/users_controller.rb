@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :not_require_login
+  before_action :not_require_login, except:[:show]
   # navigate to register form
   def new
     @user = User.new
@@ -17,6 +17,17 @@ class UsersController < ApplicationController
         format.html {render :new,status: :unprocessable_entity}
       end
     end
+  end
+
+  # visit history log
+  def show
+    @user = User.find_by(id:current_user.id,is_admin:false)
+      if @user
+        @bids = @user.bids.order(created_at: :desc)
+      else
+        flash[:warning]="You should be a Bidder !!!"
+        redirect_to products_path
+      end
   end
 
   # create strong params

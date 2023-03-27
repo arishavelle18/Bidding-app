@@ -2,9 +2,8 @@ class ProductsController < ApplicationController
   # check if the user is logged_in
   before_action :require_login
 
-
   def index
-    @products = Product.all
+    @products = Product.all.order(created_at: :desc)
   end
 
   def new
@@ -28,6 +27,14 @@ class ProductsController < ApplicationController
       end
     end
   end
+  # show the product and 
+  def show
+    @product = Product.find_by(id: params[:id])
+    if @product
+      @bids = @product.bids.order(created_at: :desc)
+    end
+  
+  end
 
   def edit
      # check if you are admin
@@ -41,6 +48,8 @@ class ProductsController < ApplicationController
     @product = Product.find_by(id:params[:id])
     respond_to do |format|
       if @product.update(product_params)
+        # if you edit then it will open auction
+        @product.update(stop_switch:!@product.stop_switch)
         flash[:success] = "Edit Auction successfully"
         format.html {redirect_to products_path}
       else
@@ -51,18 +60,35 @@ class ProductsController < ApplicationController
 
   def destroy
      # check if you are admin
-    is_admin
-    respond_to do |format|
+    if current_user.is_admin
       @product = Product.find_by(id:params[:id])
-      @product.destroy
-      flash[:success] = "Delete Auction successfully"
-      format.html {redirect_to products_path}
+      if @product
+        @product.destroy
+        flash[:success] = "Delete Auction successfully"
+        redirect_to products_path
+      end
+    else
+      flash[:danger] = "Unauthorized Access !!!"
+      redirect_to products_path
+    end
+  end
+# if will stop the bid
+  def stopbid
+    @product = Product.find_by(id:params[:id])
+    @user = User.find_by(id:current_user.id)
+   
+    if @product && @user.is_admin
+      @product.update(stop_switch:!@product.stop_switch)
+      redirect_to products_path
+    else
+      flash[:danger] = "Unauthorized Access !!!"
+      redirect_to products_path
     end
   end
 
   # create a strong params
   private def product_params
-    params.require(:product).permit(:admin_id,:product_name,:description,:lowest_allowable_bid,:starting_bid_price,:bidding_expiration)
+    params.require(:product).permit(:user_id,:product_name,:description,:lowest_allowable_bid,:starting_bid_price,:bidding_expiration)
   end
   
   private def is_admin
@@ -71,8 +97,6 @@ class ProductsController < ApplicationController
       flash[:danger] = "Unauthorized Access !!!"
       redirect_to products_path
     end
-
-    true
   end
  
 

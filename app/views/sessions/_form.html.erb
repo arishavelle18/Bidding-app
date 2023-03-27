@@ -1,11 +1,11 @@
 <%= form_with model:@user,url:login_path, method: :post, data:{turbo:true} do |f| %>
     <div class="mb-3">
         <%= f.label :email %>
-        <%= f.email_field :email,class:"form-control" %>
+        <%= f.email_field :email,class:"form-control" ,required: true%>
     </div>
     <div class="mb-3">
         <%= f.label :password %>
-        <%= f.password_field :password ,class:"form-control" %>
+        <%= f.password_field :password ,class:"form-control" ,required: true%>
     </div>  
     
     <div class="mb-3">

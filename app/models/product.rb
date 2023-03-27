@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :user
-  has_many :bids
+  has_many :bids, dependent: :delete_all
 
   # it must be present
   validates :product_name,presence:true,length: { maximum: 500 }

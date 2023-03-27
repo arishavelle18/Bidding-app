@@ -1,0 +1,31 @@
+<% provide(:title,"Profile") %>
+<h1>Profile</h1>
+<p>Name : <%= @user.full_name %></p>
+<p>Email :<%= @user.email %></p>
+
+<h4>Activity log :</h4>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>Product Name</td>
+            <td>Bidded</td>
+            <td>Bid Created</td>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <% @bids.each do |bid| %>
+            <tr>
+                <td><%= bid.product.product_name %></td>
+                <td><%= bid.bid_value %></td>
+                <td><%= bid.created_at.strftime('%Y-%m-%d %I:%M %p') %></td>
+            </tr>
+        <% end %>
+        
+        
+    </tbody>
+</table>
+
+

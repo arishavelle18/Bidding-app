@@ -76,3 +76,17 @@ end
 gem 'validates_timeliness', '~> 7.0.0.beta1'
 # for advance validation for email
 gem "valid_email2"
+
+# add api admin
+gem 'activeadmin'
+# for activeaadmin
+gem 'devise'
+
+
+
+gem "jquery-rails"
+gem "bootstrap"
+gem "sassc-rails"
+gem "cssbundling-rails", "~> 1.1"
+
+gem "jsbundling-rails", "~> 1.1"

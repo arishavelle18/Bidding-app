@@ -19,21 +19,37 @@
         <tr>
             <td><%= product.product_name %></td>
             <td><%= product.description %></td>
-            <td><%= product.lowest_allowable_bid %></td>
-            <td><%= product.starting_bid_price %></td>
-            <td><%= product.bidding_expiration %></td>
-            <td> None</td>
-            <td class="d-flex flex-row bd-highlight justify-content-center">
+            <td>₱<%= number_with_delimiter(product.lowest_allowable_bid) %></td>
+            <td>₱<%= number_with_delimiter(product.starting_bid_price) %></td>
+            <td><%= product.bidding_expiration.strftime('%Y-%m-%d %I:%M %p') %></td>
+            <td> <%= product.bids.empty? ? "None" : "₱#{number_with_delimiter(product.bids[-1].bid_value)}"  %></td>
+            <td class="d-flex flex-column bd-highlight">
                 
                 
                 <% if !current_user.is_admin%>
-                    <%= link_to "Send Bid",'#',class:"btn btn-primary mx-3"%>
+                 <%# check if the auction is expired %>
+                    <% if DateTime.now < product.bidding_expiration && !product.stop_switch%>
+                        <%= link_to "Send Bid",bid_path(product),class:"btn btn-primary mb-2"%>
+                    <% else %>
+                        <%= link_to "Closed","#",class:"btn btn-warning disabled-link mb-2"%>   
+                    <% end %>
+                        
                 <% else %>
-                    <%= link_to "Stop Bid",'#',class:"btn btn-secondary mx-3" %>
-                    <%= link_to "Edit Auction",product_edit_path(product),class:"btn btn-info mx-3" %>
-                    <%= link_to "Delete Auction",product_delete_path(product),data:{turbo:true},method: :delete,class:"btn btn-danger mx-3",:onclick => "return confirm('Are you sure you want to delete this post?')" %>
+                     <% if DateTime.now >= product.bidding_expiration || product.stop_switch %>
+                        <%= link_to "Closed","#",class:"btn btn-warning disabled-link mb-2"%> 
+                    <% else %>
+                        <%= link_to "Stop Bid",stop_path(product.id),class:"btn btn-primary mb-2", method: :patch %> 
+                    <% end %>
+                    <%= link_to "Edit/Open Auction",product_edit_path(product),class:"btn btn-info mb-2" %>
+                    <%= link_to "Delete Auction",product_delete_path(product),data:{turbo:true},method: :delete,class:"btn btn-danger mb-2",:onclick => "return confirm('Are you sure you want to delete this post?')" %>
                 <% end %>
-                
+                    <%= link_to "Show Product",product_path(product),class:"btn btn-secondary mb-2"%>
+                    <% if DateTime.now >= product.bidding_expiration %>
+                        Winner: <%= product.bids.empty? ? "None" : product.bids[-1].user.full_name %>
+                        
+                    <% end %>
+                    
+
                 
             </td>
         </tr>   

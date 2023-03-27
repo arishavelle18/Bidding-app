@@ -1,0 +1,23 @@
+<% provide(:title,"Show Auction") %>
+
+<h1>Product: <%= @product.product_name %></h1>
+<p><b>Description:</b> <%= @product.description %></p>
+<p><b>Lowest allowable bid:</b> <%= @product.lowest_allowable_bid %></p>
+<p><b>Starting bid price:</b> <%= @product.starting_bid_price %></p>
+<p><b>Bidding expiration:</b> <%= @product.bidding_expiration.strftime('%Y-%m-%d %I:%M %p') %></p>
+
+<h3>Lastest Bid :</h3>
+
+<% @bids.each do |product| %>
+    <p><b>Name: </b><%= product.user.full_name %></p>
+    <p><b>Bid: </b><%= product.bid_value %></p>
+    <p><b>Created: </b><%= product.created_at.strftime('%Y-%m-%d %I:%M %p') %></p>
+    <hr>
+<% end %>
+
+<% if @bids.count == 0 %>
+<hr class="divider">
+    <h4 class="text-center">No Bidders</h4>
+<% end %>
+
+<%= @bid    %>
