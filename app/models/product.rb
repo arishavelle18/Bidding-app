@@ -1,7 +1,23 @@
 class Product < ApplicationRecord
   belongs_to :user
   has_many :bids, dependent: :delete_all
+  has_one_attached :image
+  # check if the post is created by the admin
+  attr_accessor:create_by_admin
+  before_save:set_created_by_admin_flag
+  def set_created_by_admin_flag
+    self.create_by_admin = user&.is_admin?
+  end
 
+
+  # check if the bidder is uniq and cannot be repeated
+  def bids_sum
+    bids.sum(:bid_value)
+  end
+  
+  def winner
+    (bidding_expiration <= DateTime.now || stop_switch) ? "₱#{bids_sum}" : "None"
+  end
   # it must be present
   validates :product_name,presence:true,length: { maximum: 500 }
   validates :description,presence:true

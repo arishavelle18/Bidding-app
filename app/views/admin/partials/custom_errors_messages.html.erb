@@ -1,0 +1,6 @@
+<!-- app/views/admin/partials/custom_error_messages.html.erb -->
+<ul class="errors">
+  <% object.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+  <% end %>
+</ul>

@@ -44,7 +44,7 @@
                     <%= link_to "Delete Auction",product_delete_path(product),data:{turbo:true},method: :delete,class:"btn btn-danger mb-2",:onclick => "return confirm('Are you sure you want to delete this post?')" %>
                 <% end %>
                     <%= link_to "Show Product",product_path(product),class:"btn btn-secondary mb-2"%>
-                    <% if DateTime.now >= product.bidding_expiration %>
+                    <% if DateTime.now >= product.bidding_expiration || product.stop_switch %>
                         Winner: <%= product.bids.empty? ? "None" : product.bids[-1].user.full_name %>
                         
                     <% end %>
