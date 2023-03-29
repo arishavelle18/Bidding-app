@@ -1,11 +1,14 @@
-<%= form_with model:@product,url:setup,data:{turbo:true} do |f| %>
+<%= form_with model:@product,url:setup,data:{turbo:false} do |f| %>
 
      <%= render partial:"layouts/error_message",locals:{objects:@product} %>
     <div class="mb-3">   
          <%= f.label :"Product name : " %>
          <%= f.text_field :product_name,class:"form-control"%>
     </div>
-    
+    <div class="mb-3">
+          <%= f.label :"Add Photo : ",class:"d-block"%>
+          <%= f.file_field :image,accept:"image/*" %>
+    </div>
     <div class="mb-3">   
          <%= f.label :"Description : " %>
          <%= f.text_field :description,class:"form-control"%>

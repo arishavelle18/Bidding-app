@@ -346,6 +346,7 @@ DEPENDENCIES
   bootsnap
   bootstrap
   capybara
+  cloudinary
   cssbundling-rails (~> 1.1)
   debug
   devise

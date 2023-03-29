@@ -16,10 +16,16 @@ class ProductsController < ApplicationController
     # check if you are admin
     is_admin
     # add to the data base
-    @product = Product.create(product_params)
+    @product = Product.new(product_params)
     
     respond_to do |format| 
-      if @product.save
+      if @product.valid?
+        if !params[:product][:image].nil?
+          result =  Cloudinary::Uploader.upload(params[:product][:image])
+          @product.image = result["public_id"]
+        end
+        
+        @product.save
          flash[:success] = "Create auction successfully"
           format.html {redirect_to products_path}
       else
@@ -46,10 +52,17 @@ class ProductsController < ApplicationController
     # check if you are admin
     is_admin
     @product = Product.find_by(id:params[:id])
+    # render plain:@product.image
+    Cloudinary::Uploader.destroy(@product.image) if params[:product][:image]
     respond_to do |format|
       if @product.update(product_params)
+        if !params[:product][:image].nil?
+          
+          result =  Cloudinary::Uploader.upload(params[:product][:image])
+          @product.update_attribute(:image,result["public_id"])
+        end
         # if you edit then it will open auction
-        @product.update(stop_switch:!@product.stop_switch)
+        @product.update(stop_switch:!@product.stop_switch) if @product.stop_switch
         flash[:success] = "Edit Auction successfully"
         format.html {redirect_to products_path}
       else
@@ -63,6 +76,7 @@ class ProductsController < ApplicationController
     if current_user.is_admin
       @product = Product.find_by(id:params[:id])
       if @product
+        Cloudinary::Uploader.destroy(@product.image) if !@product.image.nil? && @product.image != "no_rpqcih"
         @product.destroy
         flash[:success] = "Delete Auction successfully"
         redirect_to products_path
@@ -88,7 +102,7 @@ class ProductsController < ApplicationController
 
   # create a strong params
   private def product_params
-    params.require(:product).permit(:user_id,:product_name,:description,:lowest_allowable_bid,:starting_bid_price,:bidding_expiration)
+    params.require(:product).permit(:user_id,:product_name,:description,:lowest_allowable_bid,:starting_bid_price,:bidding_expiration,:image)
   end
   
   private def is_admin

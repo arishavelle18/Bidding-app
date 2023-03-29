@@ -4,6 +4,7 @@
 <table class="table table-striped text-center">
     <thead>
         <tr>
+            <td scope="col">Image</td>
             <td scope="col">Product Name</td>
             <td scope="col">Description</td>
             <td scope="col">Lowest Allowable Bid</td>
@@ -17,16 +18,16 @@
         
         <% @products.each do |product| %>
         <tr>
+            <td><%= !product.image.nil? ? cl_image_tag(product.image , :width=>200, :crop=>"fill"):cl_image_tag("no_rpqcih", :width=>200, :crop=>"fill") %></td>
             <td><%= product.product_name %></td>
             <td><%= product.description %></td>
             <td>₱<%= number_with_delimiter(product.lowest_allowable_bid) %></td>
             <td>₱<%= number_with_delimiter(product.starting_bid_price) %></td>
             <td><%= product.bidding_expiration.strftime('%Y-%m-%d %I:%M %p') %></td>
             <td> <%= product.bids.empty? ? "None" : "₱#{number_with_delimiter(product.bids[-1].bid_value)}"  %></td>
-            <td class="d-flex flex-column bd-highlight">
-                
-                
-                <% if !current_user.is_admin%>
+            <td>
+                <div class="row">
+                    <% if !current_user.is_admin%>
                  <%# check if the auction is expired %>
                     <% if DateTime.now < product.bidding_expiration && !product.stop_switch%>
                         <%= link_to "Send Bid",bid_path(product),class:"btn btn-primary mb-2"%>
@@ -49,6 +50,8 @@
                         
                     <% end %>
                     
+                </div>
+                
 
                 
             </td>

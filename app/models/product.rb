@@ -1,7 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :user
   has_many :bids, dependent: :delete_all
-  has_one_attached :image
   # check if the post is created by the admin
   attr_accessor:create_by_admin
   before_save:set_created_by_admin_flag
