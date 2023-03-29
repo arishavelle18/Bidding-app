@@ -85,6 +85,4 @@ test:
 #
 production:
   <<: *default
-  database: bidding_system_production
-  username: bidding_system
-  password: <%= ENV["BIDDING_SYSTEM_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
