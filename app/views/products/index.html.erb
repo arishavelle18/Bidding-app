@@ -27,7 +27,7 @@
             <td> <%= product.bids.empty? ? "None" : "₱#{number_with_delimiter(product.bids[-1].bid_value)}"  %></td>
             <td>
                 <div class="row">
-                    <% if !current_user.is_admin%>
+        
                  <%# check if the auction is expired %>
                     <% if DateTime.now < product.bidding_expiration && !product.stop_switch%>
                         <%= link_to "Send Bid",bid_path(product),class:"btn btn-primary mb-2"%>
@@ -40,8 +40,7 @@
                         Winner: <%= product.bids.empty? ? "None" : product.bids[-1].user.full_name %>
                         
                     <% end %>
-                
-                <% end %>
+            
                 
                 </div>
                 
