@@ -26,6 +26,13 @@ ActiveAdmin.register Product do
       end
     end
     column :stop_switch
+    column :winner, :label =>"Winner" do |product|
+       if DateTime.now >= product.bidding_expiration || product.stop_switch
+          product.bids.empty? ? "None" : product.bids[-1].user.full_name 
+       else
+        "None"
+       end
+    end
     actions
   end
 
@@ -35,6 +42,12 @@ ActiveAdmin.register Product do
   show do
     attributes_table do
       row :id
+      row :admin_user_id, :label => "Admin_User" do |product|
+        if product.admin_user_id.present?
+          admin_user = AdminUser.find(product.admin_user_id)
+          link_to admin_user.email, admin_admin_user_path(admin_user)
+        end
+      end
       row :image do |product|
         product.image.present? ? cl_image_tag(product.image , :width=>200, :crop=>"fill") :  cl_image_tag("no_rpqcih" , :width=>200, :crop=>"fill") 
       end
@@ -43,7 +56,13 @@ ActiveAdmin.register Product do
       row :lowest_allowable_bid
       row :starting_bid_price
       row :bidding_expiration
-      row :winner
+      row :winner, :label =>"Winner" do |product|
+        if DateTime.now >= product.bidding_expiration || product.stop_switch
+           product.bids.empty? ? "None" : product.bids[-1].user.full_name 
+        else
+         "None"
+        end
+      end
       row :stop_switch
     end
     render partial: 'admin/partials/bidders', locals: { product: product }
@@ -53,7 +72,7 @@ ActiveAdmin.register Product do
   form do |f|
     f.semantic_errors *f.object.errors.attribute_names
     f.inputs do
-      f.input :admin_user_id , :label => "Admin_User", :as => :select, :collection => AdminUser.all.map{|c| [c.email, c.id]}
+      f.input :admin_user_id, label: "Admin User", as: :hidden, input_html: { value: current_admin_user.id }
       # check if image is presented or not and this form is targeting create and edit form
       if f.object.image.present?
         f.input :image, as: :file, hint: cl_image_tag(f.object.image , :width=>200, :crop=>"fill")

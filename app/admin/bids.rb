@@ -11,7 +11,7 @@ ActiveAdmin.register Bid do
     f.semantic_errors *f.object.errors.attribute_names
     f.inputs do 
       f.input :bid_value
-      f.input :user_id, :label => "User", :as => :select, :collection => User.where(is_admin:false).all.map{|c| [c.full_name, c.id]}
+      f.input :user_id, :label => "User", :as => :select, :collection => User.all.map{|c| [c.full_name, c.id]}
       f.input :product_id, :label => "Product", :as => :select, :collection => Product.all.map{|c| [c.product_name, c.id]}
     end
     f.actions
