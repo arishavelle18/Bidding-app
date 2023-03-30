@@ -1,4 +1,5 @@
 class AdminUser < ApplicationRecord
+  has_many :products, dependent: :delete_all
   # after_create :create_user_record
   # private
 
@@ -35,5 +36,5 @@ class AdminUser < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, 
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable 
 end

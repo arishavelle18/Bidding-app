@@ -1,6 +1,5 @@
 class User < ApplicationRecord
     has_many :bids, dependent: :delete_all
-    has_many :products, dependent: :delete_all
     has_secure_password
 
     # we make sure email store in downcase

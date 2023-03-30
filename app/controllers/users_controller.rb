@@ -18,10 +18,10 @@ class UsersController < ApplicationController
       end
     end
   end
-
+  # dito iinalis ko 
   # visit history log
   def show
-    @user = User.find_by(id:current_user.id,is_admin:false)
+    @user = User.find_by(id:current_user.id)
       if @user
         @bids = @user.bids.order(created_at: :desc)
       else

@@ -1,10 +1,10 @@
 <% if product.bids.any? %>
-  <h4>Bidders:</h4>
+  <h2>Bidders Name:</h2>
   <ul>
     <%# user info appear in the product they bidded %>
 
     <% product.bids.joins(:user).pluck("users.id, users.full_name").uniq.each do |bid| %>
-      <li><%= link_to bid[1],admin_user_path(bid[0]) %></li>
+      <li><h3><%= link_to bid[1],admin_user_path(bid[0]) %></h3></li>
     <% end %>
   </ul>
 <% end %>

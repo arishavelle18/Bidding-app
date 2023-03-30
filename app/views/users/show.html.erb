@@ -9,18 +9,22 @@
 <table class="table">
     <thead>
         <tr>
+            <td>Image</td>
             <td>Product Name</td>
             <td>Bidded</td>
             <td>Bid Created</td>
+            <td>Action</td>
         </tr>
     </thead>
     <tbody>
         
         <% @bids.each do |bid| %>
             <tr>
+                <td><%= !bid.product.image.nil? ? cl_image_tag(bid.product.image , :width=>200, :crop=>"fill"):cl_image_tag("no_rpqcih", :width=>200, :crop=>"fill") %></td>
                 <td><%= bid.product.product_name %></td>
                 <td><%= bid.bid_value %></td>
                 <td><%= bid.created_at.strftime('%Y-%m-%d %I:%M %p') %></td>
+                <td><%= link_to "Show Product",product_path(bid.product),class:"btn btn-secondary mb-2"%></td>
             </tr>
         <% end %>
         
