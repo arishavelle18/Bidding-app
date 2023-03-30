@@ -18,21 +18,13 @@
               <%= link_to "Home",products_path,class:"nav-link" %>
             </li>
             
-            <% if current_user.is_admin %>
-              <li class="nav-item">
-                <%= link_to "Create Auction",product_new_path,class:"nav-link" %>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Admin</a>
-              </li>
-            <% end %>
         <% end %>
       </ul>
       <ul class="d-flex navbar-nav ms-auto mb-2 mb-lg-0">
           
           <% if logged_in? %>
           
-          <% if !current_user.is_admin %>
+          <% if current_user %>
             <li class="nav-item mx-3"> 
                 <%= link_to @current_user.full_name, profile_path,class:"nav-link" %>
             </li> 
