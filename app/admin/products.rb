@@ -6,12 +6,11 @@ ActiveAdmin.register Product do
   # Uncomment all parameters which should be permitted for assignment
   #
  
-  permit_params :id,:image,:product_name, :description, :lowest_allowable_bid, :starting_bid_price, :bidding_expiration, :user_id, :stop_switch
+  permit_params :id,:image,:product_name, :description, :lowest_allowable_bid, :starting_bid_price, :bidding_expiration, :stop_switch,:admin_user_id 
   
   index do
     selectable_column
     id_column
-    column :id
     column :image do |product|
       product.image.present? ? cl_image_tag(product.image , :width=>200, :crop=>"fill") :  cl_image_tag("no_rpqcih" , :width=>200, :crop=>"fill") 
     end
@@ -20,7 +19,12 @@ ActiveAdmin.register Product do
     column :lowest_allowable_bid
     column :starting_bid_price
     column :bidding_expiration
-    column :user_id
+    column :admin_user_id, :label => "Admin_User" do |product|
+      if product.admin_user_id.present?
+        admin_user = AdminUser.find(product.admin_user_id)
+        link_to admin_user.email, admin_admin_user_path(admin_user)
+      end
+    end
     column :stop_switch
     actions
   end
@@ -49,7 +53,7 @@ ActiveAdmin.register Product do
   form do |f|
     f.semantic_errors *f.object.errors.attribute_names
     f.inputs do
-      f.input :user_id, :label => "User", :as => :select, :collection => User.where(is_admin:true).all.map{|c| [c.full_name, c.id]}
+      f.input :admin_user_id , :label => "Admin_User", :as => :select, :collection => AdminUser.all.map{|c| [c.email, c.id]}
       # check if image is presented or not and this form is targeting create and edit form
       if f.object.image.present?
         f.input :image, as: :file, hint: cl_image_tag(f.object.image , :width=>200, :crop=>"fill")
@@ -72,6 +76,7 @@ ActiveAdmin.register Product do
     def create
       # pass to product model
       @product = Product.new(permitted_params[:product])
+      # render plain:permitted_params[:product]
       if @product.valid?
         if !params[:product][:image].nil?
           result =  Cloudinary::Uploader.upload(params[:product][:image])
@@ -83,6 +88,7 @@ ActiveAdmin.register Product do
         render :new
       end
     end
+    # for adding cloudinary/image in the admin and editing info 
     def update
       @product = Product.find(params[:id])
       Cloudinary::Uploader.destroy(@product.image) if params[:product][:image]
@@ -91,12 +97,25 @@ ActiveAdmin.register Product do
           result =  Cloudinary::Uploader.upload(params[:product][:image])
           @product.update_attribute(:image,result["public_id"])
         end
-        @product.update(stop_switch:!@product.stop_switch) if @product.stop_switch
+        # if the stop_switch has no value then,there is no need for updaating the switch
+        @product.update(stop_switch:!@product.stop_switch) if @product.stop_switch != params[:stop_switch] && !params[:stop_switch].blank?
         redirect_to admin_product_path(@product), notice: 'Product was successfully updated.'
       else
         render :edit
       end
     end
+    # for deleting cloudinary/image in the admin and info 
+    def destroy
+       @product = Product.find_by(id:params[:id])
+       if @product
+         Cloudinary::Uploader.destroy(@product.image) if !@product.image.nil? && @product.image != "no_rpqcih"
+         @product.destroy
+         redirect_to admin_products_path, notice: 'Product was successfully Deleted.'
+       else
+        redirect_to admin_products_path, notice: 'Unauthorized Access !!!'
+       end
+   end
+
   end
 
 

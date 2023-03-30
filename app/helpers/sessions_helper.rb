@@ -26,16 +26,16 @@ module SessionsHelper
         end
     end
     
-    def require_admin
-        unless !admin?
-          flash[:danger] = "Unauthorize Access !!!"
-          redirect_to products_path
-        end
-    end
+    # def require_admin
+    #     unless !admin?
+    #       flash[:danger] = "Unauthorize Access !!!"
+    #       redirect_to products_path
+    #     end
+    # end
 
-    def admin?
-        current_user.is_admin
-    end
+    # def admin?
+    #     current_user.is_admin
+    # end
 
     # check if login or not
     def logged_in?

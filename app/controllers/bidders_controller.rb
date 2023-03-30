@@ -1,7 +1,7 @@
 class BiddersController < ApplicationController
   # check if the user is logged_in
   before_action :require_login
-  before_action :require_admin
+  # before_action :require_admin
 
   def new
     # product_id

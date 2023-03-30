@@ -1,6 +1,8 @@
 <% provide(:title,"Show Auction") %>
 
 <h1>Product: <%= @product.product_name %></h1>
+<%= !@product.image.nil? ? cl_image_tag(@product.image , :width=>200, :crop=>"fill"):cl_image_tag("no_rpqcih", :width=>200, :crop=>"fill") %>
+
 <p><b>Description:</b> <%= @product.description %></p>
 <p><b>Lowest allowable bid:</b> <%= @product.lowest_allowable_bid %></p>
 <p><b>Starting bid price:</b> <%= @product.starting_bid_price %></p>
@@ -19,5 +21,3 @@
 <hr class="divider">
     <h4 class="text-center">No Bidders</h4>
 <% end %>
-
-<%= @bid    %>

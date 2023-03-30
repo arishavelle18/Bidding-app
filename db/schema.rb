@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_29_202924) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_30_093931) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_202924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "full_name"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -59,10 +63,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_202924) do
     t.datetime "bidding_expiration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
     t.boolean "stop_switch", default: false
     t.string "image"
-    t.index ["user_id"], name: "index_products_on_user_id"
+    t.bigint "admin_user_id"
+    t.index ["admin_user_id"], name: "index_products_on_admin_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -76,5 +80,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_29_202924) do
 
   add_foreign_key "bids", "products"
   add_foreign_key "bids", "users"
-  add_foreign_key "products", "users"
+  add_foreign_key "products", "admin_users"
 end
